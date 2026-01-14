@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPOCH & RYE | SF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0f11;
+            --text-main: #e2e2e2;
+            --text-muted: #888888;
+            --accent: #cd5d36;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Custom Utilities */
+        .text-accent {
+            color: var(--accent);
+        }
+        
+        .mix-blend-overlay {
+            mix-blend-mode: overlay;
+        }
+
+        /* Animations */
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-parallax {
+            transition: transform 0.1s linear;
+        }
+
+        /* Noise Texture */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            z-index: 9999;
+            opacity: 0.03;
+        }
+
+        /* Hover Effects */
+        .hover-lift {
+            transition: transform 0.4s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+            z-index: -1;
+        }
+        .btn-primary:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation (Minimal) -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
+        <div class="text-xl font-bold tracking-tighter">EPOCH & RYE.</div>
+        <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest opacity-80">
+            <a href="#process" class="hover:text-gray-400 transition-colors">Process</a>
+            <a href="#menu" class="hover:text-gray-400 transition-colors">Menu</a>
+            <a href="#visit" class="hover:text-gray-400 transition-colors">Visit</a>
+        </div>
+    </nav>
+
+    <!-- 1. HERO SECTION -->
+    <!-- Layout: Fullscreen, Image-First, Centered Typography -->
+    <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Parallax Hint -->
+        <div class="absolute inset-0 w-full h-full">
+            <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2671&auto=format&fit=crop" 
+                 alt="Espresso extraction macro" 
+                 class="w-full h-full object-cover opacity-60 scale-105" 
+                 style="filter: contrast(1.1) brightness(0.6);">
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 text-center px-4">
+            <p class="text-xs md:text-sm uppercase tracking-[0.3em] mb-4 text-accent reveal-text">Specialty Coffee • San Francisco</p>
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-none mb-6 mix-blend-lighten reveal-text" style="transition-delay: 0.1s;">
+                LIQUID<br>
+                <span class="italic font-light text-white/70">ARCHITECTURE</span>
+            </h1>
+            <div class="mt-8 reveal-text" style="transition-delay: 0.2s;">
+                 <a href="#visit" class="btn-primary border border-white/20 px-8 py-4 text-sm uppercase tracking-widest hover:border-transparent transition-colors">
+                    Taste the Void
+                 </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- 2. VALUE PROPOSITION -->
+    <!-- Layout: Asymmetrical, Breaking the Grid, Floating Card -->
+    <section class="relative py-32 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Text Block -->
+            <div class="lg:col-span-5 z-20 reveal-text">
+                <h2 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+                    NOT JUST CAFFEINE.<br>
+                    <span class="text-accent">RITUAL.</span>
+                </h2>
+                <p class="text-lg text-gray-400 leading-relaxed mb-8">
+                    In a city that moves at the speed of light, we press pause. 
+                    Epoch & Rye is an experiment in patience. We source micro-lot beans 
+                    that tell a story of soil, altitude, and obsessive cultivation.
+                </p>
+                <div class="h-px w-24 bg-white/20"></div>
+            </div>
+
+            <!-- Image overlapping text -->
+            <div class="lg:col-span-8 lg:-ml-24 lg:mt-24 z-10 reveal-text relative">
+                <div class="relative aspect-[4/3] overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-color)] to-transparent z-10 opacity-60"></div>
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=2574&auto=format&fit=crop" 
+                         alt="Dark moody cafe interior" 
+                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. HOW IT WORKS (The Process) -->
+    <!-- Layout: Vertical Rhythm, Spacious, Step-by-Step -->
+    <section id="process" class="py-32 bg-[#121214]">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-24 reveal-text">
+                <h3 class="text-sm uppercase tracking-[0.2em] text-gray-500 mb-4">The Methodology</h3>
+                <p class="text-3xl md:text-4xl font-light font-[Syne]">PRECISION IN THREE ACTS</p>
+            </div>
+
+            <div class="space-y-24">
+                <!-- Step 1 -->
+                <div class="group flex flex-col md:flex-row gap-8 items-start reveal-text">
+                    <div class="text-6xl font-bold text-[#222] group-hover:text-accent transition-colors duration-500">01</div>
+                    <div class="flex-1">
+                        <h4 class="text-2xl font-bold mb-4">Source</h4>
+                        <p class="text-gray-400 leading-relaxed">Ethical direct trade with farmers in Ethiopia, Colombia, and Costa Rica. We look for high-altitude beans with complex acidity and fruit-forward profiles.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="group flex flex-col md:flex-row gap-8 items-start reveal-text">
+                    <div class="text-6xl font-bold text-[#222] group-hover:text-accent transition-colors duration-500">02</div>
+                    <div class="flex-1">
+                        <h4 class="text-2xl font-bold mb-4">Roast</h4>
+                        <p class="text-gray-400 leading-relaxed">Small batch roasting in our Mission district facility. We aim for the "sweet spot"—developing sugar browning without sacrificing the bean's inherent character.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="group flex flex-col md:flex-row gap-8 items-start reveal-text">
+                    <div class="text-6xl font-bold text-[#222] group-hover:text-accent transition-colors duration-500">03</div>
+                    <div class="flex-1">
+                        <h4 class="text-2xl font-bold mb-4">Extract</h4>
+                        <p class="text-gray-400 leading-relaxed">Whether it's our signature espresso or a V60 pour-over, every variable—temperature, grind size, pressure—is measured to the gram.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. KEY FEATURES (Menu/Vibe) -->
+    <!-- Layout: Editorial Grid, Image Heavy, Magazine Style -->
+    <section id="menu" class="py-32 px-4 md:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[400px]">
+            
+            <!-- Item 1: Text Block -->
+            <div class="p-8 border border-white/10 flex flex-col justify-between hover:border-accent/50 transition-colors duration-300 reveal-text">
+                <div>
+                    <h3 class="text-3xl font-bold mb-2">THE<br>ROTATION</h3>
+                    <p class="text-sm text-gray-500 mt-4">WEEKLY CURATED SELECTION</p>
+                </div>
+                <ul class="space-y-4 text-lg font-light">
+                    <li class="flex justify-between border-b border-white/10 pb-2">
+                        <span>Gesha Village</span>
+                        <span class="text-accent">$12</span>
+                    </li>
+                    <li class="flex justify-between border-b border-white/10 pb-2">
+                        <span>Nitro Cold Brew</span>
+                        <span class="text-accent">$7</span>
+                    </li>
+                    <li class="flex justify-between border-b border-white/10 pb-2">
+                        <span>Oat Flat White</span>
+                        <span class="text-accent">$6</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Item 2: Image -->
+            <div class="relative overflow-hidden group reveal-text" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1507133750069-41d57118c39e?q=80&w=2670&auto=format&fit=crop" 
+                     alt="Latte Art" 
+                     class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-110">
+                <div class="absolute bottom-4 left-4 bg-black/80 px-3 py-1 text-xs uppercase tracking-widest">Craft</div>
+            </div>
+
+            <!-- Item 3: Image -->
+            <div class="relative overflow-hidden group reveal-text" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1442512595331-e89e7385a861?q=80&w=2670&auto=format&fit=crop" 
+                     alt="Pour over coffee" 
+                     class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-110">
+                <div class="absolute bottom-4 left-4 bg-black/80 px-3 py-1 text-xs uppercase tracking-widest">Precision</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. PROOF -->
+    <!-- Layout: Centered, High Impact Typography -->
+    <section class="py-24 bg-white text-black">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <div class="reveal-text">
+                <h2 class="text-3xl md:text-5xl font-bold leading-tight mb-8">
+                    "The most serious coffee program in the Bay Area right now. Unapologetically precise."
+                </h2>
+                <div class="flex justify-center items-center gap-4">
+                    <span class="h-px w-12 bg-black"></span>
+                    <p class="font-mono uppercase tracking-widest text-sm">Eater SF</p>
+                    <span class="h-px w-12 bg-black"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. PRIMARY CTA (Visit) -->
+    <!-- Layout: Split Screen, Map/Info, Heavy Footer -->
+    <section id="visit" class="relative bg-[#0a0a0a] border-t border-white/10">
+        <div class="grid grid-cols-1 md:grid-cols-2 h-[600px] md:h-[500px]">
+            <!-- Info Side -->
+            <div class="p-12 md:p-24 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10">
+                <h2 class="text-4xl font-bold mb-8 text-white">VISIT THE LAB</h2>
+                
+                <div class="space-y-8">
+                    <div>
+                        <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Location</p>
+                        <p class="text-xl">892 Valencia St.<br>San Francisco, CA 94110</p>
+                    </div>
+                    
+                    <div>
+                        <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Hours</p>
+                        <div class="grid grid-cols-2 gap-4 max-w-xs">
+                            <span class="text-gray-300">Mon - Fri</span>
+                            <span class="text-right">7am - 4pm</span>
+                            <span class="text-gray-300">Sat - Sun</span>
+                            <span class="text-right">8am - 5pm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" class="inline-block mt-12 text-accent uppercase tracking-widest border-b border-accent/50 pb-1 hover:text-white hover:border-white transition-colors w-max">
+                    Get Directions →
+                </a>
+            </div>
+
+            <!-- Image/Map Placeholder Side -->
+            <div class="relative h-full overflow-hidden">
+                 <img src="https://images.unsplash.com/photo-1481833761820-05569952d1c2?q=80&w=2670&auto=format&fit=crop" 
+                      alt="San Francisco Foggy Street" 
+                      class="absolute inset-0 w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-1000">
+                 <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+            </div>
+        </div>
+        
+        <footer class="py-8 text-center text-xs text-gray-700 uppercase tracking-widest">
+            &copy; 2024 Epoch & Rye. All rights reserved.
+        </footer>
+    </section>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-text').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+
+<script>
+  let inspectorMode = false;
+  let hoveredElement = null;
+  let selectedElement = null;
+  
+  window.addEventListener('message', (event) => {
+    if (event.data?.type === 'SET_INSPECTOR_MODE') {
+      inspectorMode = event.data.enabled;
+      document.body.style.cursor = inspectorMode ? 'crosshair' : 'default';
+    }
+    
+    if (event.data?.type === 'LOCAL_UPDATE' && selectedElement) {
+      const update = event.data.update;
+      
+      if (update.text !== undefined) {
+        selectedElement.innerText = update.text;
+      }
+      
+      if (update.styles) {
+        Object.entries(update.styles).forEach(([prop, value]) => {
+          selectedElement.style[prop] = value;
+        });
+      }
+    }
+  });
+  
+  document.addEventListener('mouseover', (e) => {
+    if (!inspectorMode) return;
+    if (hoveredElement && hoveredElement !== selectedElement) {
+      hoveredElement.style.outline = '';
+    }
+    hoveredElement = e.target;
+    if (hoveredElement !== selectedElement) {
+      hoveredElement.style.outline = '2px solid #06b6d4';
+    }
+  });
+  
+  document.addEventListener('mouseout', (e) => {
+    if (!inspectorMode || !hoveredElement) return;
+    if (hoveredElement !== selectedElement) {
+      hoveredElement.style.outline = '';
+    }
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!inspectorMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (selectedElement) {
+      selectedElement.style.outline = '';
+    }
+    
+    const el = e.target;
+    selectedElement = el;
+    el.style.outline = '3px solid #06b6d4';
+    
+    const rect = el.getBoundingClientRect();
+    const styles = window.getComputedStyle(el);
+    
+    window.parent.postMessage({
+      type: 'ELEMENT_SELECTED',
+      element: {
+        tagName: el.tagName.toLowerCase(),
+        text: el.innerText?.substring(0, 500) || '',
+        className: el.className || '',
+        styles: {
+          color: styles.color,
+          backgroundColor: styles.backgroundColor,
+          fontSize: styles.fontSize,
+          fontWeight: styles.fontWeight,
+          padding: styles.padding,
+          margin: styles.margin,
+        },
+        rect: {
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          height: rect.height,
+        },
+        selector: el.id ? '#' + el.id : (el.className ? '.' + el.className.split(' ')[0] : el.tagName.toLowerCase())
+      }
+    }, '*');
+  }, true);
+</script>
+</body>
+</html>
